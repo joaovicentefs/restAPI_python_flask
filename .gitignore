@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .idea
+.idea/aws.xml
 .idea/misc.xml
 .Python
 build/
