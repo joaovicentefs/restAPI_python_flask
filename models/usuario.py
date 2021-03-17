@@ -1,47 +1,40 @@
 from sql_alchemy import banco
 
-class HotelModel(banco.Model):
-    __tablename__ = 'hoteis'
-    hotel_id = banco.Column(banco.String, primary_key=True)
-    nome = banco.Column(banco.String(80))
-    estrelas = banco.Column(banco.Float(precision=1))
-    diaria = banco.Column(banco.Float(precision=2))
-    cidade = banco.Column(banco.String(80))
+class UserModel(banco.Model):
+    __tablename__ = 'usuarios'
+    user_id = banco.Column(banco.Integer, primary_key=True)
+    login = banco.Column(banco.String(40))
+    senha = banco.Column(banco.String(40))
 
 
-    def __init__(self, hotel_id, nome, estrelas, diaria, cidade):
-        self.hotel_id = hotel_id
-        self.nome = nome
-        self.estrelas = estrelas
-        self.diaria = diaria
-        self.cidade = cidade
+    def __init__(self, login, senha):
+        self.login = login
+        self.senha = senha
 
     def json(self):
         return {
-            'hotel_id': self.hotel_id,
-            'nome': self.nome,
-            'estrelas': self.estrelas,
-            'diaria': self.diaria,
-            'cidade': self.cidade
+            'user_id': self.user_id,
+            'login': self.login
         }
 
     @classmethod
-    def find_hotel(cls, hotel_id):
-        hotel = cls.query.filter_by(hotel_id=hotel_id).first()
-        if hotel:
-            return hotel
+    def find_user(cls, user_id):
+        user = cls.query.filter_by(user_id=user_id).first()
+        if user:
+            return user
         return None
 
-    def save_hotel(self):
+    @classmethod
+    def find_by_login(cls, login):
+        user = cls.query.filter_by(login=login).first()
+        if user:
+            return user
+        return None
+
+    def save_user(self):
         banco.session.add(self)
         banco.session.commit()
 
-    def update_hotel(self, nome, estrelas, diaria, cidade):
-        self.nome = nome
-        self.estrelas = estrelas
-        self.diaria = diaria
-        self.cidade = cidade
-
-    def delete_hotel(self):
+    def delete_user(self):
         banco.session.delete(self)
         banco.session.commit()
